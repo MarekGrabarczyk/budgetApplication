@@ -5,6 +5,7 @@ import com.personal_budget.infrastucture.database.repository.EarnerJpaRepository
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -69,8 +70,14 @@ public class EarnerController {
     }
 
     @DeleteMapping("/delete/{earnerId}")
-    public String deleteEarner(@PathVariable Integer earnerId) {
-        earnerRepository.deleteById(earnerId);
+    public String deleteEarner(@PathVariable Integer earnerId, Model model) {
+
+        try {
+            earnerRepository.deleteById(earnerId);
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("errorMessage", "Cannot delete earner with associated earnings or expenses.");
+            return "error"; // Przekieruj na stronę z błędem
+        }
 
         return "redirect:/earner";
     }
