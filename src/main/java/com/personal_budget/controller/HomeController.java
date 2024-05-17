@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -22,10 +23,11 @@ public class HomeController {
     static final String HOME = "/";
 
     @RequestMapping(value = HOME, method = RequestMethod.GET)
-    public String homePage() {
+    public String homePage(Model model) {
+        BigDecimal totalExpenses = expenseRepository.findTotalExpenses();
+        model.addAttribute("totalExpenses", totalExpenses);
         return "home";
     }
-
 
 
 }
