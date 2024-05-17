@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Earning</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-4">
+            <a th:href="@{/}" class="btn btn-info" role="button">Go back to the main page</a>
+        </div>
+    </div>
+    <hr/>
+    <div class="page-header" id="banner">
+        <h2>Add an earning</h2>
+        <form action="#" th:action="@{/earning/add}" method="POST" th:object="${earningDTO}">
+            <div class="form-group">
+                <label for="addName">Name:</label>
+                <input type="text" id="addName" name="name" required/><br>
+
+                <label for="addSalary">Salary:</label>
+                <input type="number" id="addSalary" name="salary" min="0.01" step="0.01" required/><br>
+
+                <label for="addEarner">Earner:</label>
+                <select id="addEarner" name="earnerId">
+                    <option th:each="earner : ${earners}" th:value="${earner.earnerId}" th:text="${earner.name + ' ' + earner.surname}"th:attr="data-earnerId=${earner.earnerId}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create earning" name="button"/>
+            </div>
+        </form>
+        <hr/>
+        <h2>Update an earning</h2>
+        <form action="#" th:action="@{/earning/update}" th:method="PUT" th:object="${earningDTO}">
+            <div class="form-group">
+                <label for="updateEarningId">Id:</label>
+                <input type="text" id="updateEarningId" name="earningId" required/><br>
+
+                <label for="updateName">Name:</label>
+                <input type="text" id="updateName" name="name" required/><br>
+
+                <label for="updateSalary">Price:</label>
+                <input type="number" id="updateSalary" name="salary" min="0.01" step="0.01" required/><br>
+
+                <label for="updateEarner">Earner:</label>
+                <select id="updateEarner" name="earnerId">
+                    <option th:each="earner : ${earners}" th:value="${earner.earnerId}" th:text="${earner.name + ' ' + earner.surname}"th:attr="data-earnerId=${earner.earnerId}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Update earning" name="button"/>
+            </div>
+        </form>
+        <h2>Current earnings</h2>
+        <table class="table table-striped table-hover">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Salary</th>
+                <th>Earner</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr th:each="earning : ${earnings}">
+                <td th:text="${earning.earningId}"></td>
+                <td th:text="${earning.name}"></td>
+                <td th:text="${earning.salary}"></td>
+                <td th:text="${earning.earner.name + ' ' + earning.earner.surname}"></td>
+                <td>
+                    <form action="#" th:action="@{earning/delete/{earningId}(earningId=${earning.earningId})}" th:method="DELETE">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+</body>
+</html>

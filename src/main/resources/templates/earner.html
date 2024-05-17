@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Earner</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-4">
+            <a th:href="@{/}" class="btn btn-info" role="button">Go back to the main page</a>
+        </div>
+    </div>
+    <hr/>
+    <div class="page-header" id="banner">
+        <h2>Add an earner</h2>
+        <form action="#" th:action="@{/earner/add}" method="POST" th:object="${earnerDTO}">
+            <div class="form-group">
+                Name: <input type="text" th:field="*{name}"/><br>
+                Surname: <input type="text" th:field="*{surname}"/><br>
+                Email: <input type="text" th:field="*{email}"/>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create earner" name="button"/>
+            </div>
+        </form>
+        <hr/>
+        <h2>Update an earner</h2>
+        <form action="#" th:action="@{/earner/update}" th:method="PUT" th:object="${earnerDTO}">
+            <div class="form-group">
+                Id: <input type="text" th:field="*{earnerId}"/><br>
+                Name: <input type="text" th:field="*{name}"/><br>
+                Surname: <input type="text" th:field="*{surname}"/><br>
+                Email: <input type="text" th:field="*{email}"/>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Update earner" name="button"/>
+            </div>
+        </form>
+        <h2>Current earners</h2>
+        <table class="table table-striped table-hover">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr th:each="earner : ${earners}">
+                <td th:text="${earner.earnerId}"></td>
+                <td th:text="${earner.name}"></td>
+                <td th:text="${earner.surname}"></td>
+                <td th:text="${earner.email}"></td>
+                <td>
+                    <form action="#" th:action="@{/earner/delete/{earnerId}(earnerId=${earner.earnerId})}" th:method="DELETE">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>
