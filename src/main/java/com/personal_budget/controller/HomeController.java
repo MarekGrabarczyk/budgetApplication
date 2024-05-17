@@ -3,6 +3,7 @@ package com.personal_budget.controller;
 import com.personal_budget.infrastucture.database.entity.EarnerEntity;
 import com.personal_budget.infrastucture.database.entity.ExpenseEntity;
 import com.personal_budget.infrastucture.database.repository.EarnerJpaRepository;
+import com.personal_budget.infrastucture.database.repository.EarningJpaRepository;
 import com.personal_budget.infrastucture.database.repository.ExpenseJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,13 +19,15 @@ import java.util.List;
 @AllArgsConstructor
 public class HomeController {
     private ExpenseJpaRepository expenseRepository;
-    private EarnerJpaRepository earnerRepository;
+    private EarningJpaRepository earningRepository;
 
     static final String HOME = "/";
 
     @RequestMapping(value = HOME, method = RequestMethod.GET)
     public String homePage(Model model) {
+        BigDecimal totalEarnings = earningRepository.findTotalEarnings();
         BigDecimal totalExpenses = expenseRepository.findTotalExpenses();
+        model.addAttribute("totalEarnings", totalEarnings);
         model.addAttribute("totalExpenses", totalExpenses);
         return "home";
     }
